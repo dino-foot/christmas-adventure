@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import Game from "./Game";
 import logoUrl from "../public/sprites/phaser-logo.png";
 
 const config = {
@@ -11,32 +12,28 @@ const config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     parent: "game",
-    width: 800,
-    height: 600,
+    width: 1334,
+    height: 750,
   },
   physics: {
-    default: "arcade",
-    arcade: {
+    default: "matter",
+    matter: {
       fps: 60,
-      gravity: { y: 500 },
+      debugBodyColor: 0x000000,
       debug: true,
     },
   },
-  scene: {
-    preload: preload,
-    create: create,
-    update: update,
-  },
+  scene: [Game],
 };
 
 const game = new Phaser.Game(config);
 
-function preload() {
-  this.load.image("logo", logoUrl);
-}
+// function preload() {
+//   this.load.image("logo", logoUrl);
+// }
 
-function create() {
-  this.add.image(400, 300, "logo");
-}
+// function create() {
+//   this.add.image(400, 300, "logo");
+// }
 
-function update() {}
+// function update() {}
