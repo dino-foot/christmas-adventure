@@ -1,6 +1,5 @@
 import Phaser from "phaser";
 import Game from "./Game";
-import logoUrl from "../public/sprites/phaser-logo.png";
 
 const config = {
   type: Phaser.AUTO,
@@ -27,13 +26,3 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
-
-// function preload() {
-//   this.load.image("logo", logoUrl);
-// }
-
-// function create() {
-//   this.add.image(400, 300, "logo");
-// }
-
-// function update() {}
