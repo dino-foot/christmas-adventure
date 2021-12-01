@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import Preloader from "./Preloader";
 import Game from "./Game";
 
 const config = {
@@ -22,7 +23,7 @@ const config = {
       debug: true,
     },
   },
-  scene: [Game],
+  scene: [Preloader, Game],
 };
 
 const game = new Phaser.Game(config);

@@ -1,4 +1,3 @@
-import logoUrl from "../public/sprites/phaser-logo.png";
 import simplify from "./simplify";
 
 export default class Game extends Phaser.Scene {
@@ -24,9 +23,7 @@ export default class Game extends Phaser.Scene {
     console.log("init");
   }
 
-  preload() {
-    this.load.image("logo", logoUrl);
-  }
+  preload() {}
 
   create() {
     console.log("create");
