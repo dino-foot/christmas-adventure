@@ -7,7 +7,7 @@ export default class Game extends Phaser.Scene {
     // start vertical point of the terrain, 0 = very top; 1 = very bottom
     startTerrainHeight: 0.5,
     amplitude: 200,
-    slopeLength: [200, 400],
+    slopeLength: [200, 500],
     mountainsAmount: 4,
     slopesPerMountain: 5,
   };
@@ -30,6 +30,13 @@ export default class Game extends Phaser.Scene {
 
   create() {
     console.log("create");
+
+    //test pointerdown event
+    this.input.on(
+      "pointerdown",
+      () => (this.cameras.main.scrollX += 100),
+      this
+    );
 
     let mountainGraphics = [];
     //mountain start coordinate
@@ -61,7 +68,10 @@ export default class Game extends Phaser.Scene {
             slopeStart.x + this.terrainConfig.slopeLength[1] * 1.5,
             0
           )
-        : new Phaser.Math.Vector2(slopeStart.x + slopeLength, Math.random());
+        : new Phaser.Math.Vector2(
+            slopeStart.x + slopeLength,
+            Math.random() * -1
+          );
 
     let pointX = 0;
     // while we have less slopes than regular slopes amount per mountain...
