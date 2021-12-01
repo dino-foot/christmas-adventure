@@ -6,10 +6,10 @@ export default class Game extends Phaser.Scene {
   terrainConfig = {
     // start vertical point of the terrain, 0 = very top; 1 = very bottom
     startTerrainHeight: 0.5,
-    amplitude: 100,
-    slopeLength: [150, 350],
-    mountainsAmount: 2,
-    slopesPerMountain: 10,
+    amplitude: 200,
+    slopeLength: [200, 400],
+    mountainsAmount: 4,
+    slopesPerMountain: 5,
   };
 
   //physics body
@@ -33,13 +33,15 @@ export default class Game extends Phaser.Scene {
 
     let mountainGraphics = [];
     //mountain start coordinate
-    let mountainStart = new Phaser.Math.Vector2(0, 0);
+    let mountainStart = new Phaser.Math.Vector2(0, -1);
 
     for (let i = 0; i < this.terrainConfig.mountainsAmount; i++) {
       mountainGraphics[i] = this.add.graphics(); // each mountain is a graphic object
       mountainStart = this.generateTerrain(mountainGraphics[i], mountainStart);
     }
   }
+
+  update() {} // end update
 
   generateTerrain(graphics, mountainStart) {
     // array to store slope points
@@ -65,11 +67,26 @@ export default class Game extends Phaser.Scene {
     // while we have less slopes than regular slopes amount per mountain...
     while (slopesCount < this.terrainConfig.slopesPerMountain) {
       // slope interpolation value
+      // let interpolationVal = Phaser.Math.Interpolation.SmootherStep(
+      //   (pointX - slopeStart.x) / (slopeEnd.x - slopeStart.x),
+      //   slopeStart.y,
+      //   slopeEnd.y
+      // );
+
       let interpolationVal = this.interpolate(
         slopeStart.y,
         slopeEnd.y,
         (pointX - slopeStart.x) / (slopeEnd.x - slopeStart.x)
       );
+
+      // let interpolationVal = Phaser.Math.Interpolation.CubicBezier(
+      //   (pointX - slopeStart.x) / (slopeEnd.x - slopeStart.x),
+      //   slopeStart.y,
+      //   slopeStart.y * 0.5,
+      //   slopeEnd.y * 0.25,
+      //   slopeEnd.y
+      // );
+
       // if current point is at the end of the slope...
       if (pointX == slopeEnd.x) {
         // increase slopes amount
@@ -174,7 +191,7 @@ export default class Game extends Phaser.Scene {
   drawGround(graphics, simpleSlope, pointX) {
     graphics.clear();
     graphics.moveTo(0, this.game.config.height);
-    graphics.fillStyle(0x654b35);
+    graphics.fillStyle(0xe0ffff);
     graphics.beginPath();
     simpleSlope.forEach(
       function (point) {
@@ -187,7 +204,7 @@ export default class Game extends Phaser.Scene {
     graphics.fillPath();
 
     // draw the grass
-    graphics.lineStyle(16, 0x6b9b1e);
+    graphics.lineStyle(16, 0xfffafa);
     graphics.beginPath();
     simpleSlope.forEach(function (point) {
       graphics.lineTo(point.x, point.y);
@@ -196,6 +213,7 @@ export default class Game extends Phaser.Scene {
   }
 
   // method to apply a cosine interpolation between two points
+  // can achieve better results by using cubic interpolation or Bezier curves but it’s not in the scope of this tutorial.
   interpolate(vFrom, vTo, delta) {
     let interpolation = (1 - Math.cos(delta * Math.PI)) * 0.5;
     return vFrom * (1 - interpolation) + vTo * interpolation;
