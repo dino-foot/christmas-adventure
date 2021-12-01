@@ -23,10 +23,18 @@ export default class Game extends Phaser.Scene {
     console.log("init");
   }
 
-  preload() {}
-
   create() {
     console.log("create");
+
+    const snowball = this.matter.add.image(100, 50, "snowball").setScale(0.1);
+    snowball.setBody({ type: "circle", radius: 85 });
+    // snowball.setVelocity(10, 0);
+    snowball.setAngularVelocity(0.01);
+    snowball.setBounce(0.25);
+    snowball.setFriction(0.01, 0.02, 0);
+    snowball.setMass(10);
+    snowball.thrust(0.08); //onupdate
+    snowball.setAngularVelocity(0.1);
 
     //test pointerdown event
     this.input.on(
