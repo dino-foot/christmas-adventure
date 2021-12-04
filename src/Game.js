@@ -6,8 +6,8 @@ export default class Game extends Phaser.Scene {
     terrainConfig = {
         // start vertical point of the terrain, 0 = very top; 1 = very bottom
         startTerrainHeight: 0.5,
-        amplitude: 200,
-        slopeLength: [200, 500],
+        amplitude: 100,
+        slopeLength: [200, 400],
         mountainsAmount: 4,
         slopesPerMountain: 5,
     };
@@ -60,8 +60,7 @@ export default class Game extends Phaser.Scene {
 
     update() {
         this.cameras.main.scrollX =
-            this.player.snowManBody.body.position.x -
-            this.game.config.width / 8;
+            this.player.playerBody.position.x - this.game.config.width / 8;
 
         if (this.player) this.player.update();
 
@@ -138,11 +137,11 @@ export default class Game extends Phaser.Scene {
             );
 
             // let interpolationVal = Phaser.Math.Interpolation.CubicBezier(
-            //   (pointX - slopeStart.x) / (slopeEnd.x - slopeStart.x),
-            //   slopeStart.y,
-            //   slopeStart.y * 0.5,
-            //   slopeEnd.y * 0.25,
-            //   slopeEnd.y
+            //     (pointX - slopeStart.x) / (slopeEnd.x - slopeStart.x),
+            //     slopeStart.y,
+            //     slopeStart.y * 0.25,
+            //     slopeEnd.y * 0.25,
+            //     slopeEnd.y
             // );
 
             // if current point is at the end of the slope...
@@ -249,7 +248,7 @@ export default class Game extends Phaser.Scene {
     drawGround(graphics, simpleSlope, pointX) {
         graphics.clear();
         graphics.moveTo(0, this.game.config.height);
-        graphics.fillStyle(0xe0ffff);
+        graphics.fillStyle(0xe44d0be);
         graphics.beginPath();
         simpleSlope.forEach(
             function (point) {
