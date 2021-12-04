@@ -1,5 +1,7 @@
 import snowBall from "../public/sprites/snowball.png";
 import snowFlake from "../public/sprites/snowflake.png";
+import snowManbody from '../public/sprites/body.png'
+import snowManHead from '../public/sprites/head-1.png'
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -14,6 +16,8 @@ export default class Preloader extends Phaser.Scene {
   preload() {
     this.load.image("snowball", snowBall);
     this.load.image("snowfake", snowFlake);
+    this.load.image('body', snowManbody)
+    this.load.image('head', snowManHead)
   }
 
   create() {}
