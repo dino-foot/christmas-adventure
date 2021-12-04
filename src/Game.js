@@ -1,3 +1,4 @@
+import Player from "./Player";
 import simplify from "./simplify";
 
 export default class Game extends Phaser.Scene {
@@ -15,6 +16,8 @@ export default class Game extends Phaser.Scene {
   bodyPool = [];
   bodyPoolId = [];
 
+  player;
+
   constructor() {
     super("game");
   }
@@ -26,22 +29,19 @@ export default class Game extends Phaser.Scene {
   create() {
     console.log("create");
 
-    const snowball = this.matter.add.image(100, 50, "snowball").setScale(0.1);
-    snowball.setBody({ type: "circle", radius: 85 });
-    // snowball.setVelocity(10, 0);
-    snowball.setAngularVelocity(0.01);
-    snowball.setBounce(0.25);
-    snowball.setFriction(0.01, 0.02, 0);
-    snowball.setMass(10);
-    snowball.thrust(0.08); //onupdate
-    snowball.setAngularVelocity(0.1);
+    // const snowball = this.matter.add.image(100, 50, "snowball").setScale(0.1);
+    // snowball.setBody({ type: "circle", radius: 85 });
+    // // snowball.setVelocity(10, 0);
+    // snowball.setAngularVelocity(0.01);
+    // snowball.setBounce(0.25);
+    // snowball.setFriction(0.01, 0.02, 0);
+    // snowball.setMass(10);
+    // snowball.thrust(0.08); //onupdate
+    // snowball.setAngularVelocity(0.1);
 
-    //test pointerdown event
-    this.input.on(
-      "pointerdown",
-      () => (this.cameras.main.scrollX += 100),
-      this
-    );
+    // input management
+    // this.input.on("pointerdown", this.accelerate, this);
+    // this.input.on("pointerup", this.decelerate, this);
 
     let mountainGraphics = [];
     //mountain start coordinate
@@ -51,9 +51,17 @@ export default class Game extends Phaser.Scene {
       mountainGraphics[i] = this.add.graphics(); // each mountain is a graphic object
       mountainStart = this.generateTerrain(mountainGraphics[i], mountainStart);
     }
+
+    //add player to the scene
+    //this.addPlayer();
+    this.player = new Player(this);
+    this.input.on("pointerdown", this.player.accelerate, this.player);
+    this.input.on("pointerup", this.player.decelerate, this.player);
   }
 
-  update() {} // end update
+  update() {
+    if (this.player) this.player.update();
+  } // end update
 
   generateTerrain(graphics, mountainStart) {
     // array to store slope points

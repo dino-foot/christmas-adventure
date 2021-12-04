@@ -19,7 +19,7 @@ const config = {
     default: "matter",
     matter: {
       fps: 60,
-      debugBodyColor: 0x000000,
+      debugBodyColor: 0xff0000,
       debug: true,
     },
   },
