@@ -98,6 +98,7 @@ export default class Game extends Phaser.Scene {
     } // end update
 
     generateTerrain(graphics, mountainStart) {
+        const posToSpawn = [{}];
         // array to store slope points
         let slopePoints = [];
         let slopesCount = 0;
@@ -123,26 +124,11 @@ export default class Game extends Phaser.Scene {
         let pointX = 0;
         // while we have less slopes than regular slopes amount per mountain...
         while (slopesCount < this.terrainConfig.slopesPerMountain) {
-            // slope interpolation value
-            // let interpolationVal = Phaser.Math.Interpolation.SmootherStep(
-            //   (pointX - slopeStart.x) / (slopeEnd.x - slopeStart.x),
-            //   slopeStart.y,
-            //   slopeEnd.y
-            // );
-
             let interpolationVal = this.interpolate(
                 slopeStart.y,
                 slopeEnd.y,
                 (pointX - slopeStart.x) / (slopeEnd.x - slopeStart.x)
             );
-
-            // let interpolationVal = Phaser.Math.Interpolation.CubicBezier(
-            //     (pointX - slopeStart.x) / (slopeEnd.x - slopeStart.x),
-            //     slopeStart.y,
-            //     slopeStart.y * 0.25,
-            //     slopeEnd.y * 0.25,
-            //     slopeEnd.y
-            // );
 
             // if current point is at the end of the slope...
             if (pointX == slopeEnd.x) {
