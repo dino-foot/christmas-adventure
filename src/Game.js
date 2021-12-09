@@ -18,6 +18,7 @@ export default class Game extends Phaser.Scene {
     mountainGraphics = [];
     mountainStart;
     player;
+    posToSpawn = [{}];
 
     constructor() {
         super("game");
@@ -70,10 +71,12 @@ export default class Game extends Phaser.Scene {
                 // if the mountain leaves the screen to the left...
                 if (this.cameras.main.scrollX > item.x + item.width + 100) {
                     // reuse the mountain
+                    console.log("reuse");
                     this.mountainStart = this.generateTerrain(
                         item,
                         this.mountainStart
                     );
+                    // this.spawnTree();
                 }
             }.bind(this)
         );
@@ -98,7 +101,6 @@ export default class Game extends Phaser.Scene {
     } // end update
 
     generateTerrain(graphics, mountainStart) {
-        const posToSpawn = [{}];
         // array to store slope points
         let slopePoints = [];
         let slopesCount = 0;
@@ -204,6 +206,13 @@ export default class Game extends Phaser.Scene {
                         restitution: 0,
                     }
                 );
+                //spawn tree
+                // if (i == 6) {
+                //     this.spawnTree({
+                //         x: center.x + mountainStart.x,
+                //         y: center.y - 100,
+                //     });
+                // }
             }
 
             // if the pool is not empty...
@@ -222,7 +231,21 @@ export default class Game extends Phaser.Scene {
                 this.matter.body.scale(body, 1 / length, 1);
                 this.matter.body.scale(body, distance, 1);
                 this.matter.body.setAngle(body, angle);
+
+                //spawn tree
+                if (i == 2) {
+                    this.spawnTree({
+                        x: center.x + mountainStart.x,
+                        y: center.y - 100,
+                    });
+                    console.log("pos to spawn");
+                }
             }
+
+            // this.posToSpawn.push({
+            //     x: center.x + mountainStart.x,
+            //     y: center.y,
+            // });
         }
 
         // assign a custom "width" property to the graphics object
@@ -253,6 +276,33 @@ export default class Game extends Phaser.Scene {
             graphics.lineTo(point.x, point.y);
         });
         graphics.strokePath();
+    }
+
+    spawnTree(pos) {
+        console.log(pos);
+        let rnd = Phaser.Math.Between(0, 100);
+        const key = rnd < 50 ? "tree1" : "tree2";
+
+        // const tree = this.add
+        //     .image(pos.x, pos.y, "tree1")
+        //     .setScale(0.2)
+        //     .setDepth(2);
+
+        const tree = this.matter.add
+            .image(pos.x, pos.y, key)
+            .setOrigin(1)
+            .setScale(0.25)
+            .setDepth(2);
+        tree.setBody({
+            type: "rectangle",
+            width: 30,
+            height: 200,
+        });
+        tree.setMass(100);
+        tree.setStatic(true);
+        // tree.setVisible(false);
+
+        // this.posToSpawn.length = 0;
     }
 
     // method to apply a cosine interpolation between two points
