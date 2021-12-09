@@ -1,14 +1,15 @@
 export default class Player {
     scene;
     config = {
-        PlayerAcceleration: 0.01,
+        PlayerAcceleration: 0.001,
         PlayerDeacceleration: -0.005,
-        maxVelocity: 2,
+        maxVelocity: 1.25,
     };
     acceleration = 0;
     velocity = 0;
     snowManBody;
     snowManHead;
+    playerBody;
 
     constructor(sceneObj) {
         this.scene = sceneObj;
@@ -16,34 +17,41 @@ export default class Player {
     }
 
     addPlayer() {
-        // this.playerBody = this.scene.matter.add.polygon(
-        //   this.scene.game.config.width / 8 + 25,
-        //   25,
-        //   12,
-        //   45,
-        //   {
-        //     friction: 0,
-        //     restitution: 0,
-        //   }
-        // );
-
-        this.snowManBody = this.scene.matter.add.image(
+        this.playerBody = this.scene.matter.add.polygon(
             this.scene.game.config.width / 8 + 25,
             25,
-            "snowball"
+            10,
+            45,
+            {
+                friction: 1,
+                restitution: 0,
+                frictionAir: 0.01,
+                torque: 0.4,
+                // slop: 0.05,
+                mass: 65,
+            }
         );
-        this.snowManBody.setBounce(0.25);
-        this.snowManBody.setFriction(0.2, 0.02, 0);
-        this.snowManBody.setMass(1);
-        //this.snowManBody.thrust(0.08); //onupdate
-        //this.snowManBody.setAngularVelocity(0.1);
 
-        this.snowManBody.setScale(0.1);
+        //const car = this.scene.matter.add.car(200, 50, 150, 20, 20);
 
-        this.snowManBody.setBody({
-            type: "circle",
-            radius: 80,
-        });
+        console.log("player ", this.playerBody);
+        // this.snowManBody = this.scene.matter.add.image(
+        //     this.scene.game.config.width / 8 + 25,
+        //     25,
+        //     "snowball"
+        // );
+        // this.snowManBody.setBounce(0.01);
+        // this.snowManBody.setFriction(0.5, 0.02, 0);
+        // this.snowManBody.setMass(10);
+        // //this.snowManBody.thrust(0.08); //onupdate
+        // //this.snowManBody.setAngularVelocity(0.1);
+
+        // this.snowManBody.setScale(0.1);
+
+        // this.snowManBody.setBody({
+        //     type: "circle",
+        //     radius: 80,
+        // });
     }
 
     accelerate() {
@@ -64,7 +72,11 @@ export default class Player {
             0,
             this.config.maxVelocity
         );
-        // this.scene.matter.body.setAngularVelocity(this.snowManBody, this.velocity);
-        this.snowManBody.setAngularVelocity(this.velocity);
+
+        this.scene.matter.body.setAngularVelocity(
+            this.playerBody,
+            this.velocity
+        );
+        //this.snowManBody.setAngularVelocity(this.velocity);
     }
 }
