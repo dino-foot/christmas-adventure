@@ -60,10 +60,12 @@ export default class Game extends Phaser.Scene {
     }
 
     update() {
-        this.cameras.main.scrollX =
-            this.player.playerBody.position.x - this.game.config.width / 8;
+        if (this.player) {
+            this.cameras.main.scrollX =
+                this.player.playerBody.x - this.game.config.width / 8;
 
-        if (this.player) this.player.update();
+            this.player.update();
+        }
 
         // loop through all mountains
         this.mountainGraphics.forEach(
@@ -233,10 +235,10 @@ export default class Game extends Phaser.Scene {
                 this.matter.body.setAngle(body, angle);
 
                 //spawn tree
-                if (i == 2) {
+                if (i == 2 || i == 3) {
                     this.spawnTree({
                         x: center.x + mountainStart.x,
-                        y: center.y - 100,
+                        y: center.y - 120,
                     });
                     console.log("pos to spawn");
                 }
