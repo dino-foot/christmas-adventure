@@ -33,6 +33,8 @@ export default class Game extends Phaser.Scene {
 
     create() {
         console.log("create");
+
+        // create logo
         this.add
             .image(85, this.game.config.height - 25, "logo")
             .setScale(0.5)
@@ -75,9 +77,6 @@ export default class Game extends Phaser.Scene {
                 this.scene.start("gameover");
                 console.log("gameover");
             }
-            // console.log(
-            //     `bodyA ${pair.bodyA.label} vs bodyB ${pair.bodyB.label}`
-            // );
         });
     }
 
@@ -250,7 +249,7 @@ export default class Game extends Phaser.Scene {
                 this.matter.body.scale(body, distance, 1);
                 this.matter.body.setAngle(body, angle);
 
-                //todo spawn tree
+                //todo spawn tree here
                 if (i == 2 || i == 5) {
                     this.spawnTree({
                         x: center.x + mountainStart.x,
@@ -322,10 +321,15 @@ export default class Game extends Phaser.Scene {
         // this.posToSpawn.length = 0;
     }
 
-    onCollision(event, bodyA, bodyB) {
-        //if (bodyA.label === "player")
-        console.log(bodyB.label);
-        // console.log("collide with tree, gameover ", bodyA);
+    spawnSnowFlake(pos) {
+        const snowFlake = this.matter.add
+            .image(pos.x, pos.y, "snowflake")
+            .setDepth(10)
+            .setOrigin(0.5);
+        snowflake.setBody(
+            { type: "circle", radius: 10 },
+            { label: "snowflake" }
+        );
     }
 
     // method to apply a cosine interpolation between two points
