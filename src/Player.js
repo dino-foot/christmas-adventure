@@ -14,9 +14,16 @@ export default class Player {
         this.addPlayer();
     }
 
+    reset() {
+        console.log("reset player");
+        this.playerBody.setActive(false);
+        this.playerBody.setVisible(false);
+    }
+
     addPlayer() {
+        console.log("add player");
         this.playerBody = this.scene.matter.add
-            .image(200, 50, "snowman", null)
+            .image(200, 200, "snowman", null)
             .setScale(0.35)
             .setOrigin(0.5)
             .setDepth(3)
@@ -55,28 +62,31 @@ export default class Player {
 
     accelerate() {
         console.log("acce");
-        this.acceleration = this.config.PlayerAcceleration;
+        if (this.playerBody) this.acceleration = this.config.PlayerAcceleration;
     }
 
     decelerate() {
         console.log("deacce");
-        this.acceleration = this.config.PlayerDeacceleration;
+        if (this.playerBody)
+            this.acceleration = this.config.PlayerDeacceleration;
     }
 
     update() {
-        this.velocity += this.acceleration;
-        this.velocity = Phaser.Math.Clamp(
-            this.velocity,
-            0,
-            this.config.maxVelocity
-        );
+        if (this.playerBody !== undefined || this.playerBody !== null) {
+            this.velocity += this.acceleration;
+            this.velocity = Phaser.Math.Clamp(
+                this.velocity,
+                0,
+                this.config.maxVelocity
+            );
 
-        // console.log("player update");
-        this.playerBody.setVelocityX(this.velocity);
-        // this.playerBody.setAngularVelocity(0);
-        this.scene.matter.body.setAngularVelocity(
-            this.playerBody,
-            this.velocity
-        );
+            // console.log("player update");
+            this.playerBody.setVelocityX(this.velocity);
+            // this.playerBody.setAngularVelocity(0);
+            this.scene.matter.body.setAngularVelocity(
+                this.playerBody,
+                this.velocity
+            );
+        }
     }
 }

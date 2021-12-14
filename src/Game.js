@@ -26,13 +26,16 @@ export default class Game extends Phaser.Scene {
 
     init() {
         console.log("init");
+        this.bodyPool.length = 0;
+        this.bodyPoolId.length = 0;
+        this.mountainGraphics.length = 0;
     }
 
     create() {
         console.log("create");
         this.add
-            .image(170, this.game.config.height - 50, "logo")
-            .setScale(1)
+            .image(85, this.game.config.height - 25, "logo")
+            .setScale(0.5)
             .setDepth(10)
             .setOrigin(0.5)
             .setScrollFactor(0);
@@ -228,14 +231,6 @@ export default class Game extends Phaser.Scene {
                         restitution: 0,
                     }
                 );
-
-                //spawn tree
-                // if (i == 6) {
-                //     this.spawnTree({
-                //         x: center.x + mountainStart.x,
-                //         y: center.y - 100,
-                //     });
-                // }
             }
 
             // if the pool is not empty...
@@ -255,8 +250,8 @@ export default class Game extends Phaser.Scene {
                 this.matter.body.scale(body, distance, 1);
                 this.matter.body.setAngle(body, angle);
 
-                //spawn tree
-                if (i == 2 || i == 3) {
+                //todo spawn tree
+                if (i == 2 || i == 5) {
                     this.spawnTree({
                         x: center.x + mountainStart.x,
                         y: center.y - 120,

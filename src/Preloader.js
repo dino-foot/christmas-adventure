@@ -40,11 +40,11 @@ export default class Preloader extends Phaser.Scene {
     create() {}
 
     onLoading(progress) {
-        console.log("loading assets ", progress);
+        // console.log("loading assets ", progress);
     }
 
     onCompleteLoading() {
-        console.log("loading assets done");
+        // console.log("loading assets done");
         this.scene.start("game");
     }
 }
