@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Preloader from "./Preloader";
 import Game from "./Game";
+import GameOver from "./Gameover";
 
 const config = {
     type: Phaser.AUTO,
@@ -20,13 +21,13 @@ const config = {
         matter: {
             fps: 60,
             debugBodyColor: 0xff0000,
-            debug: true,
+            debug: false,
             // gravity: {
             //     y: 20,
             // },
         },
     },
-    scene: [Preloader, Game],
+    scene: [Preloader, Game, GameOver],
 };
 
 const game = new Phaser.Game(config);

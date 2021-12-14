@@ -19,9 +19,16 @@ export default class Player {
             .image(200, 50, "snowman", null)
             .setScale(0.35)
             .setOrigin(0.5)
-            .setDepth(3);
+            .setDepth(3)
+            .setName("player");
 
-        this.playerBody.setBody({ type: "circle", radius: 75 });
+        this.playerBody.setBody(
+            {
+                type: "circle",
+                radius: 75,
+            },
+            { label: "player" }
+        );
         this.playerBody.setFixedRotation();
         this.playerBody.setAngularVelocity(0);
         this.playerBody.setBounce(0.1);

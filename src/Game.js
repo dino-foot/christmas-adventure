@@ -30,6 +30,12 @@ export default class Game extends Phaser.Scene {
 
     create() {
         console.log("create");
+        this.add
+            .image(170, this.game.config.height - 50, "logo")
+            .setScale(1)
+            .setDepth(10)
+            .setOrigin(0.5)
+            .setScrollFactor(0);
 
         // const snowball = this.matter.add.image(100, 50, "snowball").setScale(0.1);
         // snowball.setBody({ type: "circle", radius: 85 });
@@ -57,6 +63,19 @@ export default class Game extends Phaser.Scene {
         this.player = new Player(this);
         this.input.on("pointerdown", this.player.accelerate, this.player);
         this.input.on("pointerup", this.player.decelerate, this.player);
+
+        //this.matter.world.on("collisionstart", this.onCollision, this);
+        this.player.playerBody.setOnCollide((pair) => {
+            //todo gameover if label === tree
+            //todo score if label === snowflake
+            if (pair.bodyB.label === "tree") {
+                this.scene.start("gameover");
+                console.log("gameover");
+            }
+            // console.log(
+            //     `bodyA ${pair.bodyA.label} vs bodyB ${pair.bodyB.label}`
+            // );
+        });
     }
 
     update() {
@@ -202,12 +221,14 @@ export default class Game extends Phaser.Scene {
                     distance,
                     10,
                     {
+                        label: "terrain",
                         isStatic: true,
                         angle: angle,
                         friction: 1,
                         restitution: 0,
                     }
                 );
+
                 //spawn tree
                 // if (i == 6) {
                 //     this.spawnTree({
@@ -281,30 +302,35 @@ export default class Game extends Phaser.Scene {
     }
 
     spawnTree(pos) {
-        console.log(pos);
+        // console.log(pos);
         let rnd = Phaser.Math.Between(0, 100);
         const key = rnd < 50 ? "tree1" : "tree2";
-
-        // const tree = this.add
-        //     .image(pos.x, pos.y, "tree1")
-        //     .setScale(0.2)
-        //     .setDepth(2);
 
         const tree = this.matter.add
             .image(pos.x, pos.y, key)
             .setOrigin(1)
             .setScale(0.25)
-            .setDepth(2);
-        tree.setBody({
-            type: "rectangle",
-            width: 30,
-            height: 200,
-        });
+            .setDepth(2)
+            .setName("tree");
+        tree.setBody(
+            {
+                type: "rectangle",
+                width: 30,
+                height: 200,
+            },
+            { label: "tree" }
+        );
         tree.setMass(100);
         tree.setStatic(true);
-        // tree.setVisible(false);
 
+        // tree.setVisible(false);
         // this.posToSpawn.length = 0;
+    }
+
+    onCollision(event, bodyA, bodyB) {
+        //if (bodyA.label === "player")
+        console.log(bodyB.label);
+        // console.log("collide with tree, gameover ", bodyA);
     }
 
     // method to apply a cosine interpolation between two points
