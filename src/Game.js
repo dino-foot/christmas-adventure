@@ -19,6 +19,8 @@ export default class Game extends Phaser.Scene {
     mountainStart;
     player;
     posToSpawn = [{}];
+    scoreText = null;
+    SCORE = 0;
 
     constructor() {
         super("game");
@@ -32,7 +34,7 @@ export default class Game extends Phaser.Scene {
     }
 
     create() {
-        console.log("create");
+        // console.log("create");
 
         // create logo
         this.add
@@ -42,15 +44,14 @@ export default class Game extends Phaser.Scene {
             .setOrigin(0.5)
             .setScrollFactor(0);
 
-        // const snowball = this.matter.add.image(100, 50, "snowball").setScale(0.1);
-        // snowball.setBody({ type: "circle", radius: 85 });
-        // // snowball.setVelocity(10, 0);
-        // snowball.setAngularVelocity(0.01);
-        // snowball.setBounce(0.25);
-        // snowball.setFriction(0.01, 0.02, 0);
-        // snowball.setMass(10);
-        // snowball.thrust(0.08); //onupdate
-        // snowball.setAngularVelocity(0.1);
+        this.scoreText = this.add
+            .text(this.game.config.width - 200, 30, "Score: 0", {
+                fontSize: "24px",
+                fill: "#ffffff",
+                bold: "5px",
+                color: "#FFFFFF",
+            })
+            .setScrollFactor(0);
 
         //mountain start coordinate
         this.mountainStart = new Phaser.Math.Vector2(0, -1);
@@ -71,13 +72,20 @@ export default class Game extends Phaser.Scene {
 
         //this.matter.world.on("collisionstart", this.onCollision, this);
         this.player.playerBody.setOnCollide((pair) => {
-            //todo gameover if label === tree
-            //todo score if label === snowflake
+            console.log(`bodyA ${pair.bodyA.label} bodyB ${pair.bodyB.label}`);
             if (pair.bodyB.label === "tree") {
                 this.scene.start("gameover");
                 console.log("gameover");
             }
+
+            if (pair.bodyB.label === "snowflake") {
+                this.SCORE += 10;
+                // console.log("score +1", pair.bodyB);
+                pair.bodyB.gameObject.destroy();
+            }
         });
+
+        // this.spawnSnowFlake({ x: 500, y: 250 });
     }
 
     update() {
@@ -86,6 +94,11 @@ export default class Game extends Phaser.Scene {
                 this.player.playerBody.x - this.game.config.width / 8;
 
             this.player.update();
+        }
+
+        //update scoreText
+        if (this.scoreText) {
+            this.scoreText.setText("Score : " + this.SCORE);
         }
 
         // loop through all mountains
@@ -250,12 +263,20 @@ export default class Game extends Phaser.Scene {
                 this.matter.body.setAngle(body, angle);
 
                 //todo spawn tree here
-                if (i == 2 || i == 5) {
+                if (i == 16 || i == 20) {
                     this.spawnTree({
                         x: center.x + mountainStart.x,
                         y: center.y - 120,
                     });
                     console.log("pos to spawn");
+                }
+
+                if (i > 0 && i < 10) {
+                    this.spawnSnowFlake({
+                        x: center.x + mountainStart.x + 10,
+                        // y: center.y - Phaser.Math.Between(125, 250),
+                        y: center.y - 200,
+                    });
                 }
             }
 
@@ -326,10 +347,15 @@ export default class Game extends Phaser.Scene {
             .image(pos.x, pos.y, "snowflake")
             .setDepth(10)
             .setOrigin(0.5);
-        snowflake.setBody(
-            { type: "circle", radius: 10 },
+        snowFlake.setMass(1);
+        snowFlake.setDisplaySize(50, 50);
+
+        snowFlake.setBody(
+            { type: "circle", radius: 20 },
             { label: "snowflake" }
         );
+        snowFlake.setIgnoreGravity(true);
+        snowFlake.setStatic(false);
     }
 
     // method to apply a cosine interpolation between two points
