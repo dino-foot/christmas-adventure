@@ -21,7 +21,7 @@ const config = {
         matter: {
             fps: 60,
             debugBodyColor: 0xff0000,
-            debug: false,
+            debug: true,
             // gravity: {
             //     y: 20,
             // },
