@@ -31,6 +31,7 @@ export default class Game extends Phaser.Scene {
         this.bodyPool.length = 0;
         this.bodyPoolId.length = 0;
         this.mountainGraphics.length = 0;
+        this.player = undefined;
     }
 
     create() {
@@ -84,9 +85,9 @@ export default class Game extends Phaser.Scene {
 
             //this.matter.world.on("collisionstart", this.onCollision, this);
             this.player.playerBody.setOnCollide((pair) => {
-                console.log(
-                    `bodyA ${pair.bodyA.label} bodyB ${pair.bodyB.label}`
-                );
+                // console.log(
+                //     `bodyA ${pair.bodyA.label} bodyB ${pair.bodyB.label}`
+                // );
                 if (pair.bodyB.label === "tree") {
                     this.scene.start("gameover");
                     console.log("gameover");
@@ -102,10 +103,9 @@ export default class Game extends Phaser.Scene {
     }
 
     update() {
-        if (this.player) {
+        if (this.player !== undefined && this.player !== null) {
             this.cameras.main.scrollX =
                 this.player.playerBody.x - this.game.config.width / 8;
-
             this.player.update();
         }
 
