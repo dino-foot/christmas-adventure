@@ -71,6 +71,10 @@ export default class Player {
             this.acceleration = this.config.PlayerDeacceleration;
     }
 
+    jump() {
+        this.playerBody.setVelocityY(-12);
+    }
+
     update() {
         if (this.playerBody !== undefined || this.playerBody !== null) {
             this.velocity += this.acceleration;

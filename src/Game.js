@@ -21,6 +21,8 @@ export default class Game extends Phaser.Scene {
     posToSpawn = [{}];
     scoreText = null;
     SCORE = 0;
+    touchingGround = true;
+    jumpKey;
 
     constructor() {
         super("game");
@@ -28,6 +30,9 @@ export default class Game extends Phaser.Scene {
 
     init() {
         console.log("init");
+        this.jumpKey = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.SPACE
+        );
         this.bodyPool.length = 0;
         this.bodyPoolId.length = 0;
         this.mountainGraphics.length = 0;
@@ -88,6 +93,11 @@ export default class Game extends Phaser.Scene {
                 // console.log(
                 //     `bodyA ${pair.bodyA.label} bodyB ${pair.bodyB.label}`
                 // );
+
+                // if (pair.bodyB.label === "terrain") {
+                //     this.touchingGround = true;
+                // }
+
                 if (pair.bodyB.label === "tree") {
                     this.scene.start("gameover");
                     console.log("gameover");
@@ -99,7 +109,23 @@ export default class Game extends Phaser.Scene {
                     pair.bodyB.gameObject.destroy();
                 }
             });
-        });
+
+            // https://photonstorm.github.io/phaser3-docs/Phaser.Physics.Matter.Events.html#event:COLLISION_ACTIVE
+            this.matter.world.on("collisionactive", (player, other) => {
+                // console.log("collision active", other);
+                if (other.label === "terrain") {
+                    console.log("active ");
+                    this.touchingGround = true;
+                }
+            });
+
+            // this.matter.world.on("collisionend", (player, other) => {
+            //     if (other.label === "terrain") {
+            //         console.log("deactive ");
+            //         this.touchingGround = false;
+            //     }
+            // });
+        }); // end start
     }
 
     update() {
@@ -107,6 +133,15 @@ export default class Game extends Phaser.Scene {
             this.cameras.main.scrollX =
                 this.player.playerBody.x - this.game.config.width / 8;
             this.player.update();
+
+            if (
+                Phaser.Input.Keyboard.JustDown(this.jumpKey) &&
+                this.touchingGround
+            ) {
+                this.touchingGround = false;
+                console.log("jump");
+                this.player.jump();
+            }
         }
 
         //update scoreText
