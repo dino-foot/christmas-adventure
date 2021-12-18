@@ -115,7 +115,7 @@ export default class Game extends Phaser.Scene {
             this.matter.world.on("collisionactive", (player, other) => {
                 // console.log("collision active", other);
                 if (other.label === "terrain") {
-                    console.log("active ");
+                    //console.log("active ");
                     this.touchingGround = true;
                 }
             });
@@ -315,7 +315,7 @@ export default class Game extends Phaser.Scene {
                 if (i == 16 || i == 20) {
                     this.spawnTree({
                         x: center.x + mountainStart.x,
-                        y: center.y - 120,
+                        y: center.y - 60,
                     });
                     console.log("pos to spawn");
                 }
@@ -373,7 +373,7 @@ export default class Game extends Phaser.Scene {
         const tree = this.matter.add
             .image(pos.x, pos.y, key)
             .setOrigin(1)
-            .setScale(0.18)
+            .setScale(0.15)
             .setDepth(2)
             .setName("tree");
         tree.setBody(
