@@ -64,28 +64,41 @@ export default class Game extends Phaser.Scene {
             );
         }
 
-        //add player to the scene
-        //this.addPlayer();
-        this.player = new Player(this);
-        this.input.on("pointerdown", this.player.accelerate, this.player);
-        this.input.on("pointerup", this.player.decelerate, this.player);
+        const width = this.scale.width;
+        const height = this.scale.height;
+        const startText = this.add
+            .text(width * 0.5, height * 0.25, "Click to Start !", {
+                fontSize: 36,
+                color: "#ffffff",
+            })
+            .setOrigin(0.5)
+            .setDepth(500);
 
-        //this.matter.world.on("collisionstart", this.onCollision, this);
-        this.player.playerBody.setOnCollide((pair) => {
-            console.log(`bodyA ${pair.bodyA.label} bodyB ${pair.bodyB.label}`);
-            if (pair.bodyB.label === "tree") {
-                this.scene.start("gameover");
-                console.log("gameover");
-            }
+        this.input.once("pointerdown", () => {
+            startText.destroy();
+            //add player to the scene
+            //this.addPlayer();
+            this.player = new Player(this);
+            this.input.on("pointerdown", this.player.accelerate, this.player);
+            this.input.on("pointerup", this.player.decelerate, this.player);
 
-            if (pair.bodyB.label === "snowflake") {
-                this.SCORE += 10;
-                // console.log("score +1", pair.bodyB);
-                pair.bodyB.gameObject.destroy();
-            }
+            //this.matter.world.on("collisionstart", this.onCollision, this);
+            this.player.playerBody.setOnCollide((pair) => {
+                console.log(
+                    `bodyA ${pair.bodyA.label} bodyB ${pair.bodyB.label}`
+                );
+                if (pair.bodyB.label === "tree") {
+                    this.scene.start("gameover");
+                    console.log("gameover");
+                }
+
+                if (pair.bodyB.label === "snowflake") {
+                    this.SCORE += 10;
+                    // console.log("score +1", pair.bodyB);
+                    pair.bodyB.gameObject.destroy();
+                }
+            });
         });
-
-        // this.spawnSnowFlake({ x: 500, y: 250 });
     }
 
     update() {

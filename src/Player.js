@@ -23,7 +23,7 @@ export default class Player {
     addPlayer() {
         console.log("add player");
         this.playerBody = this.scene.matter.add
-            .image(200, 200, "snowman", null)
+            .image(200, 210, "snowman", null)
             .setScale(0.35)
             .setOrigin(0.5)
             .setDepth(3)
