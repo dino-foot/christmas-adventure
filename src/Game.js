@@ -33,6 +33,7 @@ export default class Game extends Phaser.Scene {
         this.jumpKey = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.SPACE
         );
+        this.SCORE = 0;
         this.bodyPool.length = 0;
         this.bodyPoolId.length = 0;
         this.mountainGraphics.length = 0;
@@ -372,7 +373,7 @@ export default class Game extends Phaser.Scene {
         const tree = this.matter.add
             .image(pos.x, pos.y, key)
             .setOrigin(1)
-            .setScale(0.25)
+            .setScale(0.18)
             .setDepth(2)
             .setName("tree");
         tree.setBody(

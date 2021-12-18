@@ -7,6 +7,7 @@ export default class Player {
     };
     acceleration = 0;
     velocity = 0;
+    jumpForce = -13;
     playerBody;
 
     constructor(sceneObj) {
@@ -72,7 +73,7 @@ export default class Player {
     }
 
     jump() {
-        this.playerBody.setVelocityY(-12);
+        this.playerBody.setVelocityY(this.jumpForce);
     }
 
     update() {
