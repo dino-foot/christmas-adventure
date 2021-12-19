@@ -3,6 +3,15 @@ export default class GameOver extends Phaser.Scene {
         super("gameover");
     }
 
+    currentScore = 0;
+    highScore = 0;
+
+    init(data) {
+        this.currentScore = data.currentScore;
+        this.highScore = localStorage.getItem("score");
+        // console.log("score ", data.currentScore);
+    }
+
     create() {
         console.log("game-over scene");
 
@@ -14,6 +23,25 @@ export default class GameOver extends Phaser.Scene {
                 fontSize: 26,
                 color: "#ffffff",
             })
+            .setOrigin(0.5);
+
+        this.add
+            .text(width * 0.5, height * 0.55, "Highscore : " + this.highScore, {
+                fontSize: 26,
+                color: "#ffffff",
+            })
+            .setOrigin(0.5);
+
+        this.add
+            .text(
+                width * 0.5,
+                height * 0.6,
+                "Your Score : " + this.currentScore,
+                {
+                    fontSize: 26,
+                    color: "#ffffff",
+                }
+            )
             .setOrigin(0.5);
 
         this.input.once("pointerdown", () => {

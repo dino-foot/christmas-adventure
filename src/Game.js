@@ -100,7 +100,19 @@ export default class Game extends Phaser.Scene {
                 // }
 
                 if (pair.bodyB.label === "tree") {
-                    this.scene.start("gameover");
+                    // handle highscore score
+
+                    // save score for the first time
+                    if (localStorage.hasOwnProperty("score") == false) {
+                        localStorage.setItem("score", this.SCORE);
+                    } else {
+                        const savedScore = localStorage.getItem("score");
+                        if (this.SCORE > savedScore) {
+                            localStorage.setItem("score", this.SCORE);
+                        }
+                    }
+
+                    this.scene.start("gameover", { currentScore: this.SCORE });
                     console.log("gameover");
                 }
 
@@ -407,8 +419,7 @@ export default class Game extends Phaser.Scene {
         snowFlake.setStatic(false);
     }
 
-    // method to apply a cosine interpolation between two points
-    // can achieve better results by using cubic interpolation or Bezier curves but it’s not in the scope of this tutorial.
+    // linear interpolation
     interpolate(vFrom, vTo, delta) {
         let interpolation = (1 - Math.cos(delta * Math.PI)) * 0.5;
         return vFrom * (1 - interpolation) + vTo * interpolation;
