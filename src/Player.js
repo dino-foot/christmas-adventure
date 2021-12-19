@@ -7,7 +7,7 @@ export default class Player {
     };
     acceleration = 0;
     velocity = 0;
-    jumpForce = -13;
+    jumpForce = -15;
     playerBody;
 
     constructor(sceneObj) {

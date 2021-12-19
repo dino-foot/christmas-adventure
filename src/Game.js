@@ -323,8 +323,9 @@ export default class Game extends Phaser.Scene {
                 this.matter.body.scale(body, distance, 1);
                 this.matter.body.setAngle(body, angle);
 
-                //todo spawn tree here
-                if (i == 16 || i == 20) {
+                //spawn tree here
+                // console.log("==> ", simpleSlope.length);
+                if (i == Phaser.Math.Between(10, simpleSlope.length - 1)) {
                     this.spawnTree({
                         x: center.x + mountainStart.x,
                         y: center.y - 60,
