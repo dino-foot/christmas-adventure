@@ -16,6 +16,8 @@ export default class Game extends Phaser.Scene {
     bodyPool = [];
     bodyPoolId = [];
     mountainGraphics = [];
+    treePool = [];
+    snowFlakesPool = [];
     mountainStart;
     player;
     posToSpawn = [{}];
@@ -37,6 +39,8 @@ export default class Game extends Phaser.Scene {
         this.bodyPool.length = 0;
         this.bodyPoolId.length = 0;
         this.mountainGraphics.length = 0;
+        this.treePool.length = 0;
+        this.snowFlakesPool.length = 0;
         this.player = undefined;
     }
 
@@ -333,7 +337,7 @@ export default class Game extends Phaser.Scene {
                     console.log("pos to spawn");
                 }
 
-                if (i > 0 && i < 10) {
+                if (i > 0 && i < 5) {
                     this.spawnSnowFlake({
                         x: center.x + mountainStart.x + 10,
                         // y: center.y - Phaser.Math.Between(125, 250),
@@ -400,6 +404,7 @@ export default class Game extends Phaser.Scene {
         tree.setMass(100);
         tree.setStatic(true);
 
+        this.treePool.push(tree);
         // tree.setVisible(false);
         // this.posToSpawn.length = 0;
     }
@@ -418,6 +423,7 @@ export default class Game extends Phaser.Scene {
         );
         snowFlake.setIgnoreGravity(true);
         snowFlake.setStatic(false);
+        this.snowFlakesPool.push(snowFlake);
     }
 
     // linear interpolation
