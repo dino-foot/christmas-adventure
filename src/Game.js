@@ -90,18 +90,22 @@ export default class Game extends Phaser.Scene {
             //add player to the scene
             //this.addPlayer();
             this.player = new Player(this);
+
             this.input.on("pointerdown", this.player.accelerate, this.player);
-            this.input.on("pointerup", this.player.decelerate, this.player);
+            //this.input.on("pointerup", this.player.decelerate, this.player);
 
             //this.matter.world.on("collisionstart", this.onCollision, this);
             this.player.playerBody.setOnCollide((pair) => {
-                // console.log(
-                //     `bodyA ${pair.bodyA.label} bodyB ${pair.bodyB.label}`
-                // );
+                console.log(
+                    `bodyA ${pair.bodyA.label} bodyB ${pair.bodyB.label}`
+                );
 
-                // if (pair.bodyB.label === "terrain") {
-                //     this.touchingGround = true;
-                // }
+                if (
+                    pair.bodyA.label === "terrain" ||
+                    pair.bodyB.label === "terrain"
+                ) {
+                    this.touchingGround = true;
+                }
 
                 if (pair.bodyB.label === "tree") {
                     // handle highscore score
@@ -128,18 +132,11 @@ export default class Game extends Phaser.Scene {
             });
 
             // https://photonstorm.github.io/phaser3-docs/Phaser.Physics.Matter.Events.html#event:COLLISION_ACTIVE
-            this.matter.world.on("collisionactive", (player, other) => {
-                // console.log("collision active", other);
-                if (other.label === "terrain") {
-                    //console.log("active ");
-                    this.touchingGround = true;
-                }
-            });
-
-            // this.matter.world.on("collisionend", (player, other) => {
+            // this.matter.world.on("collisionactive", (player, other) => {
+            //     // console.log("collision active", other);
             //     if (other.label === "terrain") {
-            //         console.log("deactive ");
-            //         this.touchingGround = false;
+            //         //console.log("active ");
+            //         this.touchingGround = true;
             //     }
             // });
         }); // end start
@@ -160,7 +157,7 @@ export default class Game extends Phaser.Scene {
                 this.player.jump();
             }
         }
-
+        // console.log("touching ", this.touchingGround);
         //update scoreText
         if (this.scoreText) {
             this.scoreText.setText("Score : " + this.SCORE);
