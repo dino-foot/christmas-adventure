@@ -354,7 +354,6 @@ export default class Game extends Phaser.Scene {
 
         // assign a custom "width" property to the graphics object
         graphics.width = pointX - 1;
-        //todo change later
         return new Phaser.Math.Vector2(graphics.x + pointX - 1, slopeStart.y);
     }
 

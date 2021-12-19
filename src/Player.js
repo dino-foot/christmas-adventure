@@ -44,21 +44,6 @@ export default class Player {
         this.playerBody.setMass(20);
         // snowball.thrust(0.08);
         // snowball.setAngularVelocity(0.1);
-
-        // this.playerBody = this.scene.matter.add.polygon(
-        //     this.scene.game.config.width / 8 + 25,
-        //     25,
-        //     10,
-        //     45,
-        //     {
-        //         friction: 1,
-        //         restitution: 0,
-        //         frictionAir: 0.01,
-        //         torque: 0.4,
-        //         // slop: 0.05,
-        //         mass: 65,
-        //     }
-        // );
     }
 
     accelerate() {
