@@ -25,12 +25,14 @@ export default class Game extends Phaser.Scene {
     SCORE = 0;
     touchingGround = true;
     jumpKey;
+    // MATTER;
 
     constructor() {
         super("game");
     }
 
     init() {
+        // this.MATTER = new Phaser.Physics.Matter.MatterPhysics(this);
         console.log("init");
         this.jumpKey = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.SPACE
@@ -39,8 +41,15 @@ export default class Game extends Phaser.Scene {
         this.bodyPool.length = 0;
         this.bodyPoolId.length = 0;
         this.mountainGraphics.length = 0;
-        this.treePool.length = 0;
-        this.snowFlakesPool.length = 0;
+
+        this.treePool.forEach((tree) => {
+            tree.destroy();
+        });
+
+        this.snowFlakesPool.forEach((snowFlake) => {
+            snowFlake.destroy();
+        });
+
         this.player = undefined;
     }
 
@@ -91,14 +100,14 @@ export default class Game extends Phaser.Scene {
             //this.addPlayer();
             this.player = new Player(this);
 
-            this.input.on("pointerdown", this.player.accelerate, this.player);
-            //this.input.on("pointerup", this.player.decelerate, this.player);
+            // this.input.on("pointerdown", this.player.accelerate, this.player);
+            // this.input.on("pointerup", this.player.decelerate, this.player);
 
             //this.matter.world.on("collisionstart", this.onCollision, this);
             this.player.playerBody.setOnCollide((pair) => {
-                console.log(
-                    `bodyA ${pair.bodyA.label} bodyB ${pair.bodyB.label}`
-                );
+                // console.log(
+                //     `bodyA ${pair.bodyA.label} bodyB ${pair.bodyB.label}`
+                // );
 
                 if (
                     pair.bodyA.label === "terrain" ||
@@ -131,6 +140,7 @@ export default class Game extends Phaser.Scene {
                 }
             });
 
+            this.player.accelerate();
             // https://photonstorm.github.io/phaser3-docs/Phaser.Physics.Matter.Events.html#event:COLLISION_ACTIVE
             // this.matter.world.on("collisionactive", (player, other) => {
             //     // console.log("collision active", other);
@@ -338,7 +348,7 @@ export default class Game extends Phaser.Scene {
                     this.spawnSnowFlake({
                         x: center.x + mountainStart.x + 10,
                         // y: center.y - Phaser.Math.Between(125, 250),
-                        y: center.y - 200,
+                        y: center.y - 250,
                     });
                 }
             }
@@ -418,7 +428,7 @@ export default class Game extends Phaser.Scene {
             { label: "snowflake" }
         );
         snowFlake.setIgnoreGravity(true);
-        snowFlake.setStatic(false);
+        // snowFlake.setStatic(true);
         this.snowFlakesPool.push(snowFlake);
     }
 
